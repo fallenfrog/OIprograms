@@ -3,6 +3,8 @@
 
 ![](https://luogu.wao3.cn/api/practice?id=965120&dark_mode=true)
 
+![](https://api.jerryz.com.cn/guzhi?id=965120&scores=100,43,5,69,0&dark_mode=true)
+
 洛谷账号：[flyingfrog](https://www.luogu.com.cn/user/965120)
 
 # 寄
