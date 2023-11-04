@@ -6,8 +6,8 @@ int main(){
 	for(int i = 1; i <= n; i ++){
 		system("gen.exe > data.in");
 		system("sol.exe < data.in > sol.out");
-		system("std.exe < data.in > std.out");
-		if(system("fc sol.out std.out")){
+		system("sb.exe < data.in > sb.out");
+		if(system("fc sol.out sb.out")){
 			cout << "sb, 炸了";
 			return 0;
 		}

@@ -36,7 +36,7 @@ namespace genshin{
 };
 
 genshin::queue <int> mx, mn;
-int n, d, l, ans = 0x3f3f3f3f;
+int n, d, l = 1, r = 0, ans = 0x3f3f3f3f;
 struct node{
 	int x, y;
 }nd[N];
@@ -49,18 +49,21 @@ int main(){
 	cin >> n >> d;
 	for(int i = 1; i <= n; i ++)  cin >> nd[i].x >> nd[i].y;
 	sort(nd + 1, nd + n + 1, [](node a, node b){return a.x < b.x;});
-	for(int i = 1; i <= n; i ++){
-		while(!mx.empty() && nd[mx.back()].y < nd[i].y)  mx.pop_back();  mx.push_back(i);
-		while(!mn.empty() && nd[mn.back()].y > nd[i].y)  mn.pop_back();  mn.push_back(i);
-		cerr << "max:" << mx.front() << " min:" << mn.front() << '\n';
-		while(l < i && !mx.empty() && !mn.empty() && (!l || nd[mx.front()].y - nd[mn.front()].y < d)){
-			l ++;
-			cerr << l << ' ' << mx.front() << ' ' << mn.front() << ' ' << i << '\n';
-			if(!mx.empty() && mx.front() < l)  mx.pop_front();
-			if(!mn.empty() && mn.front() < l)  mn.pop_front();
+	while(r <= n){
+		while(r <= n && (mx.empty() || mn.empty() || nd[mx.front()].y - nd[mn.front()].y < d)){
+			r ++;
+			cerr << l << ' ' << r << '\n';
+			while(!mx.empty() && nd[mx.back()].y < nd[r].y)  mx.pop_back();  mx.push_back(r);
+			while(!mn.empty() && nd[mn.back()].y > nd[r].y)  mn.pop_back();  mn.push_back(r);
 		}
-		cerr << l << ' ' << i << '\n';
-		ans = min(ans, nd[i].x - nd[l].x);
+		while(l <= r && (!mx.empty() && !mn.empty() && nd[mx.front()].y - nd[mn.front()].y >= d)){
+			ans = min(ans, nd[r].x - nd[l].x);
+			l ++;
+			cerr << l << ' ' << r << '\n';
+			while(!mx.empty() && nd[mx.front()].x < nd[l].x)  mx.pop_front();
+			while(!mn.empty() && nd[mn.front()].x < nd[l].x)  mn.pop_front();
+		}
+		cerr << "r=" << r << '\n';
 	}
 	cout << (ans == 0x3f3f3f3f ? -1 : ans);
 

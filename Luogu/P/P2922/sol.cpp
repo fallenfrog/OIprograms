@@ -24,22 +24,18 @@ struct trie01{
 		if(!a[pos][tmp])  a[pos][tmp] = ++ tot;
 		insert(x, a[pos][tmp], len + 1);
 		siz[pos] = siz[a[pos][0]] + siz[a[pos][1]] + isn[pos];
-		// cerr << pos << ' ' << siz[pos] << ' ' << a[pos][0] << ' ' << siz[a[pos][0]] << ' ' << a[pos][1] << ' ' << siz[a[pos][1]] << '\n';
 	}
 	int query(string x, int len){
 		int res = 0, tmp = 1;
 		for(int i = 0; i < len; i ++){
 			res += isn[tmp];
 			int pos = a[tmp][x[i] - '0'];
-			// cerr << pos << ' ';
 			if(!pos){
-				// cerr << '\n';
 				return res;
 			}
 			tmp = pos;	
 		}
 		res += siz[tmp];
-		// cerr << "size=" << siz[tmp] << '\n';
 		return res;
 	}
 }trie;
