@@ -13,6 +13,7 @@ const int mod = 1e9;
 
 int n, h[N], ans, tot, k, t;
 int i, j;
+unordered_map <int, int> fa;
 struct point{
 	int x, y;
 }ps[N];
@@ -46,57 +47,24 @@ signed main(){
 	cin.tie(0); cout.tie(0);
 	
 	cin >> n;
-	for(i = 1; i <= n; i ++){
+	for(int i = 1; i <= n; i ++){
 		cin >> ps[i].x >> ps[i].y;
 	}
 	sort(ps + 1, ps + n + 1, [](point a, point b){return a.x == b.x ? a.y < b.y : a.x < b.x;});
-	t = 1;  for(i = 2; i <= n; i ++){
-		if(ps[i - 1].x != ps[i].x || ps[i - 1].y < ps[i].y - 1){
-			nd[++ tot] = node{ps[i - 1].x, ps[i - t].y, ps[i - 1].y, t};
-			// cerr << tot << ' ' << nd[tot].p << ' ' << nd[tot].l << ' ' << nd[tot].r << '\n';
-			t = 0;
+	nd[++ tot] = node{ps[1].x, ps[1].y, ps[1].y, 1};
+	fa[ps[1].x ] = tot;
+	for(int i = 2; i <= n; i ++){
+		if(ps[i].x == ps[i - 1].x && ps[i].y == ps[i - 1].y + 1)
+			fa[] = tot, nd[tot].r = ps[i].y, nd[tot].siz ++;
+		else
+			nd[++ tot] = node{ps[i].x, ps[i].y, ps[i].y, 1};
+	}
+	for(int i = 1; i <= tot; i ++){
+		for(int j = nd[i].l; j <= nd[i].r; j ++){
+			
 		}
-		t ++;
 	}
 	nd[++ tot] = node{ps[n].x, ps[n - t + 1].y, ps[n].y, t};
-	// cerr << tot << ' ' << nd[tot].p << ' ' << nd[tot].l << ' ' << nd[tot].r << '\n';
-	// cerr << "tot=" << tot << '\n';
-	j = 1;  for(i = 1; j <= tot; i ++){
-		while(j <= tot && (nd[j].p == nd[i].p || nd[j].r < nd[i].l))  j ++;
-		if(j > tot)  break;
-		while(j <= tot && nd[j].p == nd[i].p + 1 && nd[j].r >= nd[i].l && nd[i].r >= nd[j].l){
-			e[++ k] = {i, h[j]}, h[j] = k;
-			e[++ k] = {j, h[i]}, h[i] = k;
-			// cerr << i << ' ' << nd[i].p << ' ' << nd[i].l << ' ' << nd[i].r << "  " << j << ' ' << nd[j].p << ' ' << nd[j].l << ' ' << nd[j].r << '\n';
-			j ++;
-		}
-		j --;
-	}
-	dfs(1, 0);
-	init();
-	sort(ps + 1, ps + n + 1, [](point a, point b){return a.y == b.y ? a.x < b.x : a.y < b.y;});
-	t = 1;  for(i = 2; i <= n; i ++){
-		if(ps[i - 1].y != ps[i].y || ps[i - 1].x < ps[i].x - 1){
-			nd[++ tot] = node{ps[i - 1].y, ps[i - t].x, ps[i - 1].x, t};
-			// cerr << tot << ' ' << nd[tot].p << ' ' << nd[tot].l << ' ' << nd[tot].r << '\n';
-			t = 0;
-		}
-		t ++;
-	}
-	nd[++ tot] = node{ps[n].y, ps[n - t + 1].x, ps[n].x, t};
-	// cerr << tot << ' ' << nd[tot].p << ' ' << nd[tot].l << ' ' << nd[tot].r << '\n';
-	// cerr << "tot=" << tot << '\n';
-	j = 1;  for(i = 1; j <= tot; i ++){
-		while(j <= tot && (nd[j].p == nd[i].p || nd[j].r < nd[i].l))  j ++;
-		if(j > tot)  break;
-		while(j <= tot && nd[j].p == nd[i].p + 1 && nd[j].r >= nd[i].l && nd[i].r >= nd[j].l){
-			e[++ k] = {i, h[j]}, h[j] = k;
-			e[++ k] = {j, h[i]}, h[i] = k;
-			// cerr << i << ' ' << nd[i].p << ' ' << nd[i].l << ' ' << nd[i].r << "  " << j << ' ' << nd[j].p << ' ' << nd[j].l << ' ' << nd[j].r << '\n';
-			j ++;
-		}
-		j --;
-	}
 	dfs(1, 0);
 	cout << ans;
 

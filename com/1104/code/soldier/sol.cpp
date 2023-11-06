@@ -14,7 +14,6 @@ const int M = 50 + 2;
 int n, m, k, t, ans;
 struct node{
 	int tot, num[M], sum[M];
-	bool ps[M];
 }nd[N];
 
 signed main(){
@@ -27,9 +26,9 @@ signed main(){
 		cin >> nd[i].tot;
 		for(int j = 1; j <= nd[i].tot; j ++){
 			cin >> nd[i].num[j];
-			nd[i].ps[nd[i].num[j]] = 1;
 			for(int k = nd[i].num[j]; k <= m; k ++)  nd[i].sum[k] ++;
 		}
+		sort(nd[i].num + 1, nd[i].num + nd[i].tot + 1);
 		for(int j = 1; j < i; j ++){
 			bool tmp = 1;
 			for(int k = 1; k <= nd[i].tot; k ++){
