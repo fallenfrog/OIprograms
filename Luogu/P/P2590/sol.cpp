@@ -8,7 +8,7 @@ inline void FileIO(string s){
 
 const string name = "P2590";
 const int N = 3e4 + 2;
-const int INF = -2e9;
+const int INF = 2e9;
 
 int n, h[N], k, u, v, val[N], q;
 string op;
@@ -31,7 +31,7 @@ void dfs1(int x){
 
 void dfs2(int x, int b){
     dfn[x] = ++ tim, nv[tim] = val[x], bel[x] = b;
-    dfs2(son[x], b);
+    if(son[x])  dfs2(son[x], b);
     for(int i = h[x]; i; i = e[i].nxt){
         int v = e[i].v;
         if(v == fa[x] || v == son[x])  continue;
@@ -112,7 +112,7 @@ int query_max(int l, int r){
 }
 
 int main(){
-    //FileIO();
+    // FileIO();
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 

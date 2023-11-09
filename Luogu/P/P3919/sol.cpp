@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#define int long long
 using namespace std;
 
 inline void FileIO(string s){
@@ -7,50 +8,77 @@ inline void FileIO(string s){
 }
 
 const string name = "P3919";
-const int N = 1e6 + 2;
+const int N = 2e6 + 2;
 
-int n, m, a[N];
+int n, m, a[N], v, op, l, k, t;
 
 struct hjt{
 #define lc d[idx].ls
 #define rc d[idx].rs
 #define mid (d[idx].l + d[idx].r >> 1)
 
-    int tot, visions, roots[N];
+    int tot, versions, roots[N];
+	hjt(){
+		tot = versions = 0;
+		memset(roots, 0, sizeof(roots));
+	}
 
-    struct node{
+	struct node{
         int l, r, ls, rs, v;
-    }d[N << 4];
+    }d[N * 20];
 
-    int newtree(){
-        d[++ tot] = d[1];
-        roots[visions ++] = tot;
-        return tot;
+    void newtree(){
+        roots[versions ++] = tot + 1;
     }
 
-    void build(int l, int r, int idx){
-        d[idx] = {l, r, tot + 1, tot + 2, 0}, tot += 2;
-        if(l == r){
+    void build(int l, int r, int &idx){
+		idx = ++ tot;
+		d[idx] = {l, r, 0, 0, 0};
+		if(l == r){
             d[idx].v = a[l];
+			return ;
+		}
+        build(l, mid, lc), build(mid + 1, r, rc);
+    }
+
+    void update(int pos, int idx, int k){
+        d[++ tot] = d[idx];
+        if(d[idx].l == d[idx].r){
+            d[idx].v = k;
             return ;
         }
-        build(l, mid, lc), build(mid + 1, r, rc);
-        d[idx].v = d[lc].v + d[rc].v;
+        if(pos <= mid)  update(pos, lc, k);
+        else  update(pos, rc, k);
     }
 
-    void add(int l, int r, int idx, int k){
-        
+    int query(int pos, int idx){
+        if(d[idx].l == d[idx].r)  return d[idx].v;
+        if(pos <= mid)  return query(pos, lc);
+        else  return query(pos, rc);
     }
 }tree;
 
-int main(){
+signed main(){
     //FileIO();
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
 
     cin >> n >> m;
     for(int i = 1; i <= n; i ++)  cin >> a[i];
-
+    tree.newtree();
+    tree.build(1, n, t);
+    while(m --){
+        cin >> v >> op >> l;
+        if(op == 1){
+            cin >> k;
+            tree.newtree();
+            tree.update(l, tree.roots[v], k);
+        }else{
+			tree.newtree();
+			tree.d[++ tree.tot] = tree.d[tree.roots[v]];
+			cout << tree.query(l, tree.tot) << '\n';
+		}
+    }
     
     return 0;
 }
