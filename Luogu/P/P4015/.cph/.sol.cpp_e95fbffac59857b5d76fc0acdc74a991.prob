@@ -1,0 +1,1 @@
+{"name":"Local: sol","url":"e:\\Programs\\Luogu\\P\\P4015\\sol.cpp","tests":[{"id":1699613979166,"input":"2 3\n220 280\n170 120 210\n77 39 105\n150 186 122","output":"48500\n69140"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\Programs\\Luogu\\P\\P4015\\sol.cpp","group":"local","local":true}

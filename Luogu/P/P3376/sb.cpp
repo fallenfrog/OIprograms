@@ -1,77 +1,63 @@
 #include<bits/stdc++.h>
-#define int long long
+#define int long long 
 using namespace std;
-
-inline void FileIO(string s){
-	freopen((s + ".in").c_str(), "r", stdin);
-	freopen((s + ".out").c_str(), "w", stdout);
+int n, m, s, t, ans;
+struct point{
+	int pos, nex, len;
+}f[10009];
+int h[209], dep[209], cur[209], idx;
+void add(int x, int y, int len){
+	f[idx ++].nex = h[x];
+	f[idx].len = len;
+	f[idx].pos = y;
+	h[x] = idx;
 }
-
-const string name = "P3376";
-const int N = 1200 + 2;
-const int M = 120000 + 2;
-const int INF = 0x7fffffff;
-
-int n, m, k = -1, s, t, h[N], g[N], u, v, w, dep[N];
-bool vis[N];
-struct edge{
-	int v, w, nxt;
-}e[M << 1];
-
 bool bfs(){
-	queue <int> q;  q.push(s);
-	for (int i = 1; i <= n; i ++) 
-		dep[i] = 0;
+	memset(dep, -1, sizeof(dep));
+	memcpy(cur, h, sizeof(h));
+	queue<int>p;
+	p.push(s);
 	dep[s] = 1;
-	while(!q.empty()){
-		int t = q.front();  q.pop();
-		g[t] = h[t];
-		for(int i = h[t]; i; i = e[i].nxt){
-			int v = e[i].v, w = e[i].w;
-			if(w && !dep[v]){
-				dep[v] = dep[t] + 1;
-				q.push(v);
+	while(!p.empty()){
+		int k = p.front(); p.pop();
+		for(int i = h[k]; ~i; i = f[i].nex ){
+			int j = f[i].pos;
+			if(dep[j] == -1 && f[i].len) {
+				dep[j] = dep[k] + 1;
+				p.push(j);
 			}
+		}		
+	}
+	return dep[t] != -1;
+}
+int dfs(int pos = s, int num = 1145141919){
+	if(pos == t) 
+		return num;
+	int first = num;
+	for(int i = cur[pos]; num && ~i; i = f[i].nex){
+		cur[pos] = i;
+		int j = f[i].pos;
+		if(f[i].len && dep[j] == dep[pos] + 1){
+			int low = dfs(j, min(f[i].len, num));
+			num -= low;
+			f[i].len -= low;
+			f[i ^ 1].len += low;
 		}
 	}
-	return dep[t];
+	return first - num;
 }
-
-int dfs(int x = s, int flow = INF){
-	if(x == t)  return flow;
-	int rm = flow;
-	for(int i = g[x]; rm && i; i = e[i].nxt){
-		int v = e[i].v, w = e[i].w;
-		g[x] = i;
-		if(dep[v] == dep[x] + 1){
-			int c = dfs(v, min(rm, w));
-			e[i].w -= c;
-			e[i ^ 1].w += c;
-			rm -= c;
-		}
-	}
-	return flow - rm;
-}
-
-int dinic(){
-	int res = 0;
-	while(bfs())
-		res += dfs();
-	return res;
-}
-
 signed main(){
-	//FileIO();
-	ios_base::sync_with_stdio(0);
-	cin.tie(0); cout.tie(0);
-
+	memset(h, -1, sizeof(h));
 	cin >> n >> m >> s >> t;
-	for(int i = 1; i <= m; i ++){
-		cin >> u >> v >> w;
-		e[++ k] = {v, w, h[u]}, h[u] = k;
-		e[++ k] = {u, 0, h[v]}, h[v] = k;
+	for(int i = 1; i <= m ; i ++ ){
+		int x, y, len;
+		cin >> x >> y >> len;
+		add(x, y, len);
+		add(y, x, 0);
 	}
-	cout << dinic();
-	
+	while(bfs()){
+		ans += dfs();
+	}
+	cout << ans << '\n';
 	return 0;
 }

@@ -27,8 +27,12 @@
 			"	freopen((s + \".out\").c_str(), \"w\", stdout);",
 			"}",
 			"",
+			"const string name = \"name\";"
+			"",
 			"int main(){",
-			"	//FileIO();",
+			"#ifndef ONLINE_JUDGE",
+			"	FileIO(name);",
+			"#endif",
 			"	ios_base::sync_with_stdio(0);",
 			"	cin.tie(0); cout.tie(0);",
 			"	",
