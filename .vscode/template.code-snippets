@@ -19,7 +19,7 @@
 		"scope":"cpp",
 		"prefix":"init",
 		"body":[
-			"#include<bits/stdc++.h>",
+			"#include <bits/stdc++.h>",
 			"using namespace std;",
 			"",
 			"inline void FileIO(string s){",

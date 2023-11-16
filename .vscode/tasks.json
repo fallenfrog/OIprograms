@@ -16,6 +16,7 @@
 				"-Wextra",
 				"-fno-ms-extensions",
 				"-lm",
+				// "--stack=1000000000",
 				"-DCODESPACE"
 			],
 			"options": {
